@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>KDA — Dashboard</title>
+
+<style>
+/* Professional background + glass UI */
+:root{
+  --accent:#0b5ed7;
+  --muted:#dbe7ff;
+  --card-rgba: rgba(255,255,255,0.10);
+  --shadow: 0 10px 30px rgba(2,6,23,0.35);
+  --radius:12px;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{
+  /* Place your background image file as "school-bg.jpg" in the same folder */
+  background-image: url('school-bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color:#fff;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  min-height:100vh;
+  position:relative;
+  font-weight:500;
+}
+
+/* semi-opaque overlay to improve contrast */
+.bg-overlay{
+  position:fixed; inset:0; background: linear-gradient(180deg, rgba(2,6,23,0.45), rgba(2,6,23,0.55));
+  pointer-events:none; z-index:0;
+}
+
+/* layout sits above overlay */
+.header, .container, .card, .sidebar { position:relative; z-index:1 }
+
+/* header (glass) */
+.header{
+  display:flex;align-items:center;padding:18px 22px;border-radius:14px;margin:18px auto;
+  max-width:1100px;background:linear-gradient(90deg, rgba(11,94,215,0.12), rgba(8,67,153,0.08));
+  color:#fff;backdrop-filter: blur(8px);
+  box-shadow:var(--shadow);
+}
+
+/* container */
+.container{
+  max-width:1100px;margin:8px auto 56px;padding:18px;display:flex;gap:18px;
+}
+
+/* sidebar (glass) */
+.sidebar{
+  width:240px;padding:14px;border-radius:12px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+  border:1px solid rgba(255,255,255,0.04);
+  box-shadow: 0 8px 28px rgba(2,6,23,0.35);
+}
+
+/* navigation */
+.nav{display:flex;flex-direction:column;gap:8px}
+.nav button{
+  padding:10px;border-radius:10px;border:0;background:transparent;color:var(--muted);cursor:pointer;text-align:left;font-weight:700;
+}
+.nav button:hover{background:rgba(255,255,255,0.03);color:var(--accent)}
+.nav button.active{background:linear-gradient(90deg, rgba(11,94,215,0.12), rgba(11,94,215,0.06));color:var(--accent);box-shadow:inset 0 1px 0 rgba(255,255,255,0.02)}
+
+/* main area and cards (glass) */
+.main{flex:1}
+.card{
+  background: rgba(255,255,255,0.06);
+  border-radius:var(--radius); padding:16px; box-shadow:var(--shadow);
+  border:1px solid rgba(255,255,255,0.04); backdrop-filter: blur(8px);
+}
+
+/* inputs and buttons */
+.input{padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);background:rgba(255,255,255,0.03);color:#fff}
+.input::placeholder{color:rgba(255,255,255,0.6)}
+.btn{padding:8px 12px;border-radius:10px;background:var(--accent);color:#fff;border:0;cursor:pointer;font-weight:700}
+.btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.08);color:#fff}
+
+/* list items */
+.item{display:flex;justify-content:space-between;padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,0.03);margin-bottom:10px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01))}
+.muted{color:rgba(255,255,255,0.85);font-size:13px}
+
+/* responsive */
+@media(max-width:900px){
+  .container{flex-direction:column;padding:12px}
+  .sidebar{width:100%;display:flex;flex-direction:row;gap:8px;overflow:auto}
+  .nav{flex-direction:row}
+}
+</style>
+
+<script>
+  // Redirect to login as the first page if no token exists
+  (function() {
+    try {
+      const token = localStorage.getItem('kda_token');
+      if (!token) {
+        location.href = 'index.html';
+      }
+    } catch (e) {
+      location.href = 'index.html';
+    }
+  })();
+</script>
+</head>
+<body>
+  <!-- background dark overlay -->
+  <div class="bg-overlay" aria-hidden="true"></div>
+
+  <header class="header">
+    <div style="font-weight:700">King David Academy</div>
+    <div style="margin-left:auto;color:#fff">Dashboard</div>
+  </header>
+
+  <!-- START PANEL: professional onboarding -->
+  <div style="max-width:1100px;margin:14px auto;padding:0 18px;">
+    <div class="card" style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px">
+      <div style="flex:1">
+        <strong>Welcome</strong>
+        <div class="muted">Access the secure administration platform. Sign in or create an account to begin managing school operations.</div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <a class="btn ghost" href="index.html?role=student" title="Login as student">Login as Student</a>
+        <a class="btn ghost" href="index.html?role=admin" title="Login as admin">Login as Admin</a>
+        <a class="btn" href="register.html" title="Create an account">Sign up</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <aside class="sidebar card" aria-label="Navigation">
+      <nav class="nav" role="navigation">
+        <button data-screen="dashboard" class="active">Dashboard</button>
+        <button data-screen="students">Students</button>
+        <button data-screen="library">Library</button>
+        <button data-screen="attendance">Attendance</button>
+        <button id="btnLogout" class="btn" style="margin-top:10px;background:#ef4444">Logout</button>
+      </nav>
+    </aside>
+
+    <main class="main">
+      <section class="card">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div><h3 style="margin:0">Overview</h3><div class="muted">Recent activity</div></div>
+          <div><button class="btn ghost">Export</button></div>
+        </div>
+
+        <div style="display:flex;gap:12px;margin-top:12px">
+          <div style="flex:1;padding:12px;border-radius:10px;background:transparent">
+            <div class="muted">Students</div><div id="statStudents" style="font-weight:700;font-size:18px">—</div>
+          </div>
+          <div style="flex:1;padding:12px;border-radius:10px;background:transparent">
+            <div class="muted">Books</div><div id="statBooks" style="font-weight:700;font-size:18px">—</div>
+          </div>
+          <div style="flex:1;padding:12px;border-radius:10px;background:transparent">
+            <div class="muted">Attendance</div><div id="statAttendance" style="font-weight:700;font-size:18px">—</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="screens" style="margin-top:12px">
+        <div id="dashboard" class="card">
+          <h4>Recent</h4>
+          <div id="dashboardStats" class="muted">Loading...</div>
+        </div>
+
+        <div id="students" class="card" style="display:none;margin-top:12px">
+          <h4>Students</h4>
+          <form id="studentForm" style="display:flex;gap:8px;align-items:flex-end">
+            <input id="studentName" class="input" placeholder="Full name" />
+            <input id="studentClass" class="input" style="width:120px" placeholder="Class" />
+            <input id="studentPhone" class="input" style="width:140px" placeholder="Parent phone" />
+            <button type="submit" class="btn">Add</button>
+          </form>
+          <ul id="studentsList" style="margin-top:12px"></ul>
+        </div>
+
+        <div id="library" class="card" style="display:none;margin-top:12px">
+          <h4>Library</h4>
+          <form id="bookForm" style="display:flex;gap:8px;align-items:flex-end">
+            <input id="bookTitle" class="input" placeholder="Title" />
+            <input id="bookAuthor" class="input" style="width:180px" placeholder="Author" />
+            <button type="submit" class="btn">Add</button>
+          </form>
+          <ul id="booksList" style="margin-top:12px"></ul>
+        </div>
+
+        <div id="attendance" class="card" style="display:none;margin-top:12px">
+          <h4>Attendance</h4>
+          <form id="attendanceForm" style="display:flex;gap:8px;align-items:flex-end">
+            <select id="attStudent" class="input" style="flex:1"></select>
+            <input id="attDate" class="input" type="date" style="width:140px" />
+            <select id="attStatus" class="input" style="width:120px">
+              <option value="present">Present</option><option value="absent">Absent</option><option value="late">Late</option>
+            </select>
+            <button type="submit" class="btn">Record</button>
+          </form>
+          <ul id="attendanceList" style="margin-top:12px"></ul>
+        </div>
+      </section>
+    </main>
+  </div>
+
+<script src="app.js"></script>
+</body>
+</html>

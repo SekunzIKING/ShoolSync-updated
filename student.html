@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>KDA — Student</title>
+<style>
+:root{--accent:#0b5ed7;--muted:#6b7280}
+body{margin:0;font-family:Inter,Arial;background:#f7fafc;color:#0f1724}
+.header{padding:18px;background:linear-gradient(90deg,#0b5ed7,#084399);color:#fff}
+.container{max-width:900px;margin:18px auto;padding:18px}
+.card{background:#fff;padding:16px;border-radius:10px}
+.btn{padding:8px 10px;border-radius:8px;background:var(--accent);color:#fff;border:0}
+.muted{color:#6b7280;font-size:13px}
+.item{display:flex;justify-content:space-between;padding:10px;border-bottom:1px solid #f1f5f9}
+@media(max-width:700px){.container{padding:12px}}
+</style>
+</head>
+<body>
+  <header class="header"><strong>King David Academy — Student</strong></header>
+  <div class="container">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <h3 id="profileName" style="margin:0">Student</h3>
+          <div class="muted">Student dashboard</div>
+        </div>
+        <div><button id="btnLogout" class="btn">Logout</button></div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:12px">
+      <h4>Available Books</h4>
+      <ul id="booksList" style="margin-top:12px"></ul>
+    </div>
+
+    <div class="card" style="margin-top:12px">
+      <h4>Attendance</h4>
+      <ul id="attendanceList" style="margin-top:12px"></ul>
+    </div>
+  </div>
+
+<script src="app.js"></script>
+</body>
+</html>

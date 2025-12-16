@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>KDA — Register</title>
+<style>
+/* ...existing styles copied from login/register ... */
+:root{--bg:#f4f7fb;--muted:#6b7280;--shadow:0 6px 18px rgba(11,78,215,0.08)}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial;background:linear-gradient(180deg,var(--bg),#eef4ff)}
+.container{max-width:720px;margin:40px auto;padding:18px}
+.auth-card{background:#fff;padding:22px;border-radius:12px;box-shadow:var(--shadow)}
+.input{width:100%;padding:10px;margin:8px 0;border:1px solid #e6e9ef;border-radius:8px}
+.btn{padding:10px 12px;border-radius:9px;background:#0b5ed7;color:#fff;border:0;cursor:pointer}
+.btn.ghost{background:transparent;border:1px solid #e6e9ef;color:var(--muted)}
+.small{color:var(--muted)}
+
+/* added quick login links row */
+.quick-row{display:flex;gap:8px;justify-content:flex-end;margin-bottom:12px}
+</style>
+</head>
+<body>
+<div class="container">
+  <header style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
+    <div style="font-weight:700;font-size:20px">King David Academy</div>
+    <div style="margin-left:auto;color:#6b7280">Register</div>
+  </header>
+
+  <!-- added: quick login as student/admin -->
+  <div class="quick-row">
+    <a class="btn ghost" href="index.html?role=student" title="Login as Student">Login as Student</a>
+    <a class="btn ghost" href="index.html?role=admin" title="Login as Admin">Login as Admin</a>
+  </div>
+
+  <main>
+    <section id="authRegister">
+      <div id="registerForm" class="auth-card" aria-labelledby="register-heading">
+        <h2 id="register-heading">Create account</h2>
+        <!-- ...existing code... -->
+        <input id="regName" class="input" placeholder="Full name" />
+        <input id="regEmail" class="input" placeholder="Email" type="email" />
+        <input id="regPassword" class="input" type="password" placeholder="Password (6+)" />
+
+        <label class="small">Role</label>
+        <select id="regRole" class="input">
+          <option value="student">Student</option>
+          <option value="admin">Admin</option>
+        </select>
+
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <button id="btnRegister" class="btn">Register</button>
+          <a href="index.html" class="btn ghost" style="display:inline-flex;align-items:center;padding:8px 12px;border-radius:9px">Back to login</a>
+        </div>
+
+        <p class="small" style="margin-top:12px">By registering you agree to the Terms of Service and Privacy Policy. Your information will be handled in accordance with applicable regulations.</p>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+  // pre-select role from query param when opening register page
+  (function(){
+    const params = new URLSearchParams(location.search);
+    const qRole = params.get('role');
+    const sel = document.getElementById('regRole');
+    if(qRole && (qRole === 'student' || qRole === 'admin')) sel.value = qRole;
+  })();
+</script>
+
+<script src="app.js"></script>
+</body>
+</html>
